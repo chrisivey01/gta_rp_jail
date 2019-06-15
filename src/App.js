@@ -1,15 +1,14 @@
 import React from "react";
-// import logo from './logo.svg';
 import "./App.css";
 import { Provider } from "react-redux";
 import configureStore from "./store/store";
-import { obtainData } from './store/reducersAndActions'
 import Main from './components/Main'
+
+import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
+
 const store = configureStore();
 
 function App() {
-  // store.dispatch(obtainData());
-
   return (
     <Provider store={store}>
       <div className="App">

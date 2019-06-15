@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useSelector, useDispatch, useStore } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { axiosData } from "../store/reducersAndActions";
+import Display from "./Display";
 
 const Main = () => {
   const { result } = useSelector(state => ({
@@ -9,19 +10,25 @@ const Main = () => {
   const dispatch = useDispatch();
   const getData = useCallback(() => dispatch(axiosData()), [dispatch]);
 
-  const [data, setData] = useState([]);
-  useEffect(()=>{
-      getData();
-  },[getData])
+  const [lastArrested, setLastArrested] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  useEffect(() => {
+    setLastArrested(result.slice(-1).pop());
+  }, [result]);
+
   return (
-      <div>
-          <ul>
-          {result ? result.map((player, i) =>{
-              return <li key={i}>{player.player_name} {player.reason} {player.arresting_officer} {player.timestamp}</li>
-          }) : null
-        }
-       </ul>
-     </div>
+    <div>
+      {lastArrested ? (
+        <div className="recent-arrest">
+          Last Arrested: {lastArrested.player_name}{" "}
+        </div>
+      ) : null}
+      <Display result={result} />
+    </div>
   );
 };
 

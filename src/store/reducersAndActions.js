@@ -24,10 +24,8 @@ const reducer = (
 // combined action and reducer files to easily develop little projects like this one
 const obtainData = data => dispatch => {
   dispatch({
-    
     type: "GET_DATA",
     payload: data
-    
   });
 };
 
@@ -37,6 +35,9 @@ const axiosData = () => {
     return axios
       .get('http://localhost:8002/all_arrests')
       .then(response => {
+        for(let item of response.data){
+          item.time_stamp = new Date(item.time_stamp).toDateString();
+        }
         dispatch(obtainData(response.data));
       })
       .catch(error => {
